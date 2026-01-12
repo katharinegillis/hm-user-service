@@ -1,0 +1,27 @@
+meta {
+  name: Book
+  type: graphql
+  seq: 1
+}
+
+post {
+  url: http://localhost:5095/graphql
+  body: graphql
+  auth: inherit
+}
+
+body:graphql {
+  query GetBook {
+    book {
+      title
+      author {
+        name
+      }
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

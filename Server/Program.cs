@@ -6,6 +6,12 @@ builder.AddGraphQL().AddTypes();
 
 var app = builder.Build();
 
-app.MapGraphQL();
+app.MapGraphQL().WithOptions(new GraphQLServerOptions
+{
+    Tool =
+    {
+        Enable = false
+    }
+});
 
 app.RunWithGraphQLCommands(args);

@@ -164,3 +164,4 @@
 /home/katie/workspaces/household-manager/hm-user-service/Server/obj/Debug/net10.0/Server.pdb
 /home/katie/workspaces/household-manager/hm-user-service/Server/obj/Debug/net10.0/Server.genruntimeconfig.cache
 /home/katie/workspaces/household-manager/hm-user-service/Server/obj/Debug/net10.0/ref/Server.dll
+/home/katie/workspaces/household-manager/hm-user-service/Server/obj/Debug/net10.0/Server.sourcelink.json
