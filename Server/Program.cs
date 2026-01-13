@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using HotChocolate.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,3 +16,6 @@ app.MapGraphQL().WithOptions(new GraphQLServerOptions
 });
 
 app.RunWithGraphQLCommands(args);
+
+[ExcludeFromCodeCoverage]
+public partial class Program {}
