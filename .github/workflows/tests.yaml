@@ -34,3 +34,4 @@ jobs:
           path: "*.Tests/**/TestResults/**/*.cobertura.xml"
           minimum_coverage: 80
           fail_below_threshold: true
+          skip_covered: false
