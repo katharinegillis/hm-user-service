@@ -3,11 +3,10 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 
 USER app
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5095
 
 ###
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS publish
 ARG BUILD_CONFIGURATION=Release
 ARG VERSION=1.0.0
 WORKDIR /src
@@ -15,27 +14,28 @@ COPY ["./Server", "/src/Server"]
 
 WORKDIR /src/Server
 RUN if [ "$VERSION" ]; \
-    then dotnet build "Server.csproj" -c $BUILD_CONFIGURATION -o /app/build  /p:Version=$VERSION /p:AssemblyVersion=$VERSION /p:FileVersion=$VERSION; \
-    else dotnet build "Server.csproj" -c $BUILD_CONFIGURATION -o /app/build; \
+    then dotnet publish "Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish  /p:Version=$VERSION /p:AssemblyVersion=$VERSION /p:FileVersion=$VERSION; \
+    else dotnet publish "Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish; \
     fi 
 
 ###
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
+#FROM build AS publish
+#ARG BUILD_CONFIGURATION=Release
 
-WORKDIR /src/Server
-RUN dotnet publish "Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+#WORKDIR /src/Server
+#RUN dotnet publish "Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 ###
 FROM base AS final
+ENV ASPNETCORE_URLS=http://0.0.0.0:5095
+ENV ASPNETCORE_ENVIRONMENT=$BUILD_CONFIGURATION
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./entrypoint.sh /app/entrypoint.sh
 
 USER app
 RUN echo "export PATH=/app:${PATH}" >> /home/app/.bashrc
 ENV PATH=$PATH:/app
-ENTRYPOINT ["/bin/bash", "/app/entrypoint.sh"]
+CMD /app/Server
 
 ###
 FROM build AS build-test

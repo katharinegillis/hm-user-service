@@ -1,6 +1,6 @@
 ﻿services:
-  user-service-test:
-    image: user-service-test
+  hm-user-service-test:
+    image: hm-user-service-test
     build:
       context: .
       dockerfile: Dockerfile
