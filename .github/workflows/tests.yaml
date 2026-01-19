@@ -21,7 +21,7 @@ jobs:
       
       - name: Copy test executables from image
         run: |
-          docker create --name tests user-service-test
+          docker create --name tests hm-user-service-test
           docker cp tests:/app/publish-test ./Server.Tests/publish-test
           docker rm -f tests
       
