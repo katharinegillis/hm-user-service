@@ -1,0 +1,25 @@
+﻿services:
+  hm-user-service:
+    image: hm-user-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+      args:
+        APP_UID: 1000
+        BUILD_CONFIGURATION: Development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hm-user-service.rule=Host(`hm-user-service.docker`)"
+      - "traefik.http.routers.hm-user-service.entryPoints=graphql"
+      - "traefik.http.routers.hm-user-service.service=hm-user-service"
+      - "traefik.http.services.hm-user-service.loadbalancer.server.port=5095"
+    networks:
+      - traefik
+      - default
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+networks:
+  traefik:
+    external: true

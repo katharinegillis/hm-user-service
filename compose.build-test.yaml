@@ -1,0 +1,7 @@
+﻿services:
+  hm-user-service-test:
+    image: hm-user-service-test
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: publish-test
