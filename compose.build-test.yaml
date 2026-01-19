@@ -1,0 +1,7 @@
+﻿services:
+  user-service-test:
+    image: user-service-test
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: publish-test

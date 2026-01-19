@@ -13,20 +13,20 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-        
-      - name: Set up .Net 10.x
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 10.X
+
+      - name: Build image
+        run: |
+          echo "docker compose -f compose.build-test.yaml build"
+          docker compose -f compose.build-test.yaml build
       
-      - name: Run Server Tests
-        run: cd Server.Tests && dotnet build && bin/Debug/net10.0/Server.Tests --coverage --coverage-output-format cobertura --coverage-settings config.runsettings
-        
-      - name: Upload Coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: code-coverage
-          path: "Server.Tests/**/TestResults/**/*.cobertura.xml"
+      - name: Copy test executables from image
+        run: |
+          docker create --name tests user-service-test
+          docker cp tests:/app/publish-test ./Server.Tests/publish-test
+          docker rm -f tests
+      
+      - name: Run tests
+        run: ./Server.Tests/publish-test/Server.Tests --coverage --coverage-output-format cobertura --coverage-settings Server.Tests/config.runsettings
         
       - name: Code Coverage Report
         uses: 5monkeys/cobertura-action@master
