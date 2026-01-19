@@ -4,5 +4,5 @@ namespace Server.Types;
 public static class Query
 {
     public static Book GetBook()
-        => new Book("C# in depth.", new Author("Jon Skeet"));
+        => new Book("C# in depth.", new Author("John Skeet"));
 }
